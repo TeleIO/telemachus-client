@@ -70,7 +70,9 @@ async function fromArtifact(): Promise<string | null> {
 
     const artifactPath = "/tmp/telemachus-artifact/api-schema.json";
     if (!existsSync(artifactPath)) return null;
-    console.log(`Fetched from CI artifact (run ${run.id}, ${run.head_sha.slice(0, 7)})`);
+    console.log(
+      `Fetched from CI artifact (run ${run.id}, ${run.head_sha.slice(0, 7)})`,
+    );
     return readFileSync(artifactPath, "utf-8");
   } catch {
     return null;
@@ -86,7 +88,12 @@ function fromLocal(): string | null {
 function headers(): RequestInit {
   const token = process.env.GITHUB_TOKEN;
   return token
-    ? { headers: { Authorization: `token ${token}`, Accept: "application/json" } }
+    ? {
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: "application/json",
+        },
+      }
     : {};
 }
 

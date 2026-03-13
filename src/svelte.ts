@@ -24,7 +24,10 @@ export function createClient(opts?: TeleClientOptions): TeleClient {
 
 // ── createTelemetry (WebSocket streaming) ───────────────────
 
-export interface TelemetryStore extends Readable<{ data: TelemetryData; connected: boolean }> {
+export interface TelemetryStore extends Readable<{
+  data: TelemetryData;
+  connected: boolean;
+}> {
   subscribe: Readable<{ data: TelemetryData; connected: boolean }>["subscribe"];
   addKeys(...keys: string[]): void;
   removeKeys(...keys: string[]): void;
@@ -32,7 +35,10 @@ export interface TelemetryStore extends Readable<{ data: TelemetryData; connecte
   destroy(): void;
 }
 
-export interface CreateTelemetryOptions extends Omit<StreamOptions, "subscribe"> {}
+export interface CreateTelemetryOptions extends Omit<
+  StreamOptions,
+  "subscribe"
+> {}
 
 /** Stream telemetry keys via WebSocket. Returns a Svelte readable store. */
 export function createTelemetry(
@@ -72,7 +78,11 @@ export function createTelemetry(
 
 // ── createQuery (single REST fetch) ─────────────────────────
 
-export interface QueryStore<T> extends Readable<{ data: T | undefined; error: Error | undefined; loading: boolean }> {
+export interface QueryStore<T> extends Readable<{
+  data: T | undefined;
+  error: Error | undefined;
+  loading: boolean;
+}> {
   refetch(): void;
 }
 
@@ -82,7 +92,11 @@ export function createQuery<T = unknown>(
   key: string,
   ...args: (string | number)[]
 ): QueryStore<T> {
-  const store = writable<{ data: T | undefined; error: Error | undefined; loading: boolean }>({
+  const store = writable<{
+    data: T | undefined;
+    error: Error | undefined;
+    loading: boolean;
+  }>({
     data: undefined,
     error: undefined,
     loading: true,
@@ -92,7 +106,9 @@ export function createQuery<T = unknown>(
     store.set({ data: undefined, error: undefined, loading: true });
     client
       .query(key, ...args)
-      .then((v) => store.set({ data: v as T, error: undefined, loading: false }))
+      .then((v) =>
+        store.set({ data: v as T, error: undefined, loading: false }),
+      )
       .catch((e) => store.set({ data: undefined, error: e, loading: false }));
   }
 
@@ -106,16 +122,21 @@ export function createQuery<T = unknown>(
 
 // ── createBatch ─────────────────────────────────────────────
 
-export interface BatchStore extends Readable<{ data: TelemetryData; error: Error | undefined; loading: boolean }> {
+export interface BatchStore extends Readable<{
+  data: TelemetryData;
+  error: Error | undefined;
+  loading: boolean;
+}> {
   refetch(): void;
 }
 
 /** Fetch multiple keys in a single batch call */
-export function createBatch(
-  client: TeleClient,
-  keys: string[],
-): BatchStore {
-  const store = writable<{ data: TelemetryData; error: Error | undefined; loading: boolean }>({
+export function createBatch(client: TeleClient, keys: string[]): BatchStore {
+  const store = writable<{
+    data: TelemetryData;
+    error: Error | undefined;
+    loading: boolean;
+  }>({
     data: {},
     error: undefined,
     loading: true,
@@ -139,15 +160,15 @@ export function createBatch(
 
 // ── createAction ────────────────────────────────────────────
 
-export interface ActionStore extends Readable<{ loading: boolean; error: Error | undefined }> {
+export interface ActionStore extends Readable<{
+  loading: boolean;
+  error: Error | undefined;
+}> {
   execute(...args: (string | number)[]): Promise<void>;
 }
 
 /** Execute a telemetry action (POST) */
-export function createAction(
-  client: TeleClient,
-  key: string,
-): ActionStore {
+export function createAction(client: TeleClient, key: string): ActionStore {
   const store = writable<{ loading: boolean; error: Error | undefined }>({
     loading: false,
     error: undefined,

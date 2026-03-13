@@ -125,7 +125,10 @@ export function TelemachusPlugin(opts: TelemachusPluginOptions = {}) {
 
     // ── Telemetry provider ────────────────────────────────
 
-    const listeners = new Map<string, Set<(datum: Record<string, unknown>) => void>>();
+    const listeners = new Map<
+      string,
+      Set<(datum: Record<string, unknown>) => void>
+    >();
     let stream: TeleStream | null = null;
 
     function ensureStream() {
@@ -166,7 +169,10 @@ export function TelemachusPlugin(opts: TelemachusPluginOptions = {}) {
         );
       },
 
-      subscribe(domainObject: any, callback: (datum: Record<string, unknown>) => void) {
+      subscribe(
+        domainObject: any,
+        callback: (datum: Record<string, unknown>) => void,
+      ) {
         const apiKey = domainObject.identifier.key.slice(2);
 
         if (!listeners.has(apiKey)) {

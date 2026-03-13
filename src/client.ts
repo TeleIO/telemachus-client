@@ -37,10 +37,7 @@ export class TeleClient {
   // ── REST API ──────────────────────────────────────────────
 
   /** Query a single telemetry key */
-  async query(
-    key: string,
-    ...args: (string | number)[]
-  ): Promise<unknown> {
+  async query(key: string, ...args: (string | number)[]): Promise<unknown> {
     const qs = args.length ? "?" + args.join(",") : "";
     const res = await fetch(`${this.host}/api/${key}${qs}`);
     if (!res.ok) throw new TeleError(key, res.status, await res.text());

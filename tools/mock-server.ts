@@ -64,7 +64,8 @@ function generateValue(entry: ApiEntry): unknown {
   if (isAction) return null;
 
   // Special cases
-  if (key === "a.api") return Object.fromEntries(schema.map((e) => [e.key, e.description]));
+  if (key === "a.api")
+    return Object.fromEntries(schema.map((e) => [e.key, e.description]));
   if (key === "a.mods") return { far: false, mechjeb: false, principia: false };
   if (key === "a.ip") return ["127.0.0.1"];
   if (key === "a.version") return "1.10.0-mock";
@@ -75,7 +76,9 @@ function generateValue(entry: ApiEntry): unknown {
 
   switch (returnType) {
     case "bool":
-      return key.includes("sas") || key.includes("rcs") || key.includes("light");
+      return (
+        key.includes("sas") || key.includes("rcs") || key.includes("light")
+      );
     case "string":
       return `mock_${key}`;
     case "string[]":
@@ -92,7 +95,8 @@ function generateValue(entry: ApiEntry): unknown {
   // Drift plotable values with sine waves for realism
   const t = tick * 0.02;
   const h1 = seedFromKey(key);
-  const drift = Math.sin(t + h1) * base * 0.05 + Math.cos(t * 0.3 + h1 * 2) * base * 0.02;
+  const drift =
+    Math.sin(t + h1) * base * 0.05 + Math.cos(t * 0.3 + h1 * 2) * base * 0.02;
   return round(base + drift);
 }
 
@@ -112,8 +116,10 @@ function applyScaling(
   asInt?: boolean,
 ): unknown {
   if (typeof value !== "number") return value;
-  if (precision != null) value = Math.round((value as number) * 10 ** precision) / 10 ** precision;
-  if (asInt && precision != null) value = Math.round((value as number) * 10 ** precision);
+  if (precision != null)
+    value = Math.round((value as number) * 10 ** precision) / 10 ** precision;
+  if (asInt && precision != null)
+    value = Math.round((value as number) * 10 ** precision);
   return value;
 }
 
@@ -148,7 +154,10 @@ const server = Bun.serve({
     const url = new URL(req.url);
 
     // WebSocket upgrade
-    if (url.pathname === "/datalink" && req.headers.get("upgrade") === "websocket") {
+    if (
+      url.pathname === "/datalink" &&
+      req.headers.get("upgrade") === "websocket"
+    ) {
       if (server.upgrade(req)) return undefined as unknown as Response;
       return new Response("WebSocket upgrade failed", { status: 500 });
     }
@@ -190,7 +199,8 @@ const server = Bun.serve({
         let precision = globalPrecision;
         let asInt = globalInt;
         for (const mod of parts.slice(1)) {
-          if (mod.startsWith("precision:")) precision = parseInt(mod.slice(10), 10);
+          if (mod.startsWith("precision:"))
+            precision = parseInt(mod.slice(10), 10);
           if (mod === "int") asInt = true;
         }
 
@@ -220,10 +230,8 @@ const server = Bun.serve({
 
       const data = JSON.parse(String(msg));
 
-      if (data["+"])
-        for (const k of data["+"]) sub.keys.add(k);
-      if (data["-"])
-        for (const k of data["-"]) sub.keys.delete(k);
+      if (data["+"]) for (const k of data["+"]) sub.keys.add(k);
+      if (data["-"]) for (const k of data["-"]) sub.keys.delete(k);
       if (data.rate) sub.rate = data.rate;
 
       // Restart interval
@@ -252,4 +260,6 @@ const server = Bun.serve({
 
 console.log(`Telemachus mock server running on http://localhost:${port}`);
 console.log(`WebSocket: ws://localhost:${port}/datalink`);
-console.log(`${schema.length} API keys loaded (${isStatic ? "static" : "drifting"} mode)`);
+console.log(
+  `${schema.length} API keys loaded (${isStatic ? "static" : "drifting"} mode)`,
+);

@@ -62,7 +62,7 @@ for (const e of schema) {
 
 const lines: string[] = [
   "// Auto-generated from api-schema.json — do not edit",
-  '// Run `bun run generate` to regenerate',
+  "// Run `bun run generate` to regenerate",
   "",
   'import type { TeleClient } from "./client.js";',
   "",
@@ -89,7 +89,9 @@ for (const [cat, entries] of [...byCategory.entries()].sort()) {
     const hasParams = !!e.params;
     const retType = tsType(e.returnType);
     const methodName = camelCase(e.key);
-    const deprecated = e.deprecated ? "  /** @deprecated " + (e.deprecatedMessage ?? "") + " */\n" : "";
+    const deprecated = e.deprecated
+      ? "  /** @deprecated " + (e.deprecatedMessage ?? "") + " */\n"
+      : "";
     const doc = `  /** ${e.description}${e.units && e.units !== "UNITLESS" ? ` (${e.units})` : ""}${e.requiresMod ? ` — requires ${e.requiresMod}` : ""} */`;
 
     lines.push(doc);
@@ -97,7 +99,9 @@ for (const [cat, entries] of [...byCategory.entries()].sort()) {
 
     if (e.isAction) {
       if (hasParams) {
-        lines.push(`  ${methodName}(...args: (string | number)[]): Promise<void> {`);
+        lines.push(
+          `  ${methodName}(...args: (string | number)[]): Promise<void> {`,
+        );
         lines.push(`    return this.client.action("${e.key}", ...args);`);
       } else {
         lines.push(`  ${methodName}(): Promise<void> {`);
@@ -105,11 +109,17 @@ for (const [cat, entries] of [...byCategory.entries()].sort()) {
       }
     } else {
       if (hasParams) {
-        lines.push(`  ${methodName}(...args: (string | number)[]): Promise<${retType}> {`);
-        lines.push(`    return this.client.query("${e.key}", ...args) as Promise<${retType}>;`);
+        lines.push(
+          `  ${methodName}(...args: (string | number)[]): Promise<${retType}> {`,
+        );
+        lines.push(
+          `    return this.client.query("${e.key}", ...args) as Promise<${retType}>;`,
+        );
       } else {
         lines.push(`  ${methodName}(): Promise<${retType}> {`);
-        lines.push(`    return this.client.query("${e.key}") as Promise<${retType}>;`);
+        lines.push(
+          `    return this.client.query("${e.key}") as Promise<${retType}>;`,
+        );
       }
     }
     lines.push("  }");
@@ -134,7 +144,9 @@ lines.push("");
 
 // Key metadata map for runtime use
 lines.push("/** Metadata for each API key */");
-lines.push("export const KEY_META: Record<string, { description: string; units?: string; isAction: boolean; plotable: boolean; category?: string; returnType?: string; requiresMod?: string }> = {");
+lines.push(
+  "export const KEY_META: Record<string, { description: string; units?: string; isAction: boolean; plotable: boolean; category?: string; returnType?: string; requiresMod?: string }> = {",
+);
 for (const e of schema) {
   const meta = [
     `description: ${JSON.stringify(e.description)}`,
@@ -150,4 +162,6 @@ for (const e of schema) {
 lines.push("};");
 
 writeFileSync(resolve(root, "src/generated.ts"), lines.join("\n") + "\n");
-console.log(`Generated src/generated.ts with ${schema.length} keys in ${byCategory.size} categories`);
+console.log(
+  `Generated src/generated.ts with ${schema.length} keys in ${byCategory.size} categories`,
+);
