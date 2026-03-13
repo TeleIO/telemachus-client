@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/TeleIO/telemachus-client/compare/v1.0.1...v1.0.2) (2026-03-13)
+
+
+### Bug Fixes
+
+* add repository url for npm provenance verification ([9260d0d](https://github.com/TeleIO/telemachus-client/commit/9260d0d42687e1c74940ef3b06344dd74615258d))
+
 ## [1.0.1](https://github.com/TeleIO/telemachus-client/compare/v1.0.0...v1.0.1) (2026-03-13)
 
 
