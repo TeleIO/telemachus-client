@@ -2,10 +2,14 @@
 
 TypeScript client for the [Telemachus Reborn](https://github.com/TeleIO/Telemachus-1) KSP telemetry API. Covers all three transport layers — REST, batch datalink, and WebSocket streaming — with fully typed accessors generated from the API schema.
 
+[![npm](https://img.shields.io/npm/v/telemachus-client)](https://www.npmjs.com/package/telemachus-client)
+
 ## Install
 
 ```bash
 bun add telemachus-client
+# or
+npm install telemachus-client
 ```
 
 ## Quick Start
