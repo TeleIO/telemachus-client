@@ -1,6 +1,6 @@
 {
   "name": "telemachus-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "TypeScript client for the Telemachus Reborn KSP telemetry API",
   "type": "module",
   "main": "dist/index.js",
@@ -27,7 +27,9 @@
       "types": "./dist/openmct.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "generate": "bun run tools/generate-types.ts",
@@ -44,9 +46,15 @@
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
-    "react": { "optional": true },
-    "svelte": { "optional": true },
-    "vue": { "optional": true }
+    "react": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.0",
