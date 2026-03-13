@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/TeleIO/telemachus-client/compare/v1.0.0...v1.0.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* use npm 11+ for OIDC trusted publishing support ([eed5b46](https://github.com/TeleIO/telemachus-client/commit/eed5b46f2563898b083f90e09163e9564180197c))
+
 ## 1.0.0 (2026-03-13)
 
 
