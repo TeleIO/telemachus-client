@@ -1,0 +1,61 @@
+{
+  "name": "telemachus-client",
+  "version": "0.1.0",
+  "description": "TypeScript client for the Telemachus Reborn KSP telemetry API",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./react": {
+      "import": "./dist/react.js",
+      "types": "./dist/react.d.ts"
+    },
+    "./svelte": {
+      "import": "./dist/svelte.js",
+      "types": "./dist/svelte.d.ts"
+    },
+    "./vue": {
+      "import": "./dist/vue.js",
+      "types": "./dist/vue.d.ts"
+    },
+    "./openmct": {
+      "import": "./dist/openmct.js",
+      "types": "./dist/openmct.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "generate": "bun run tools/generate-types.ts",
+    "dev": "tsc --watch",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "sync": "bun run tools/sync-schema.ts",
+    "mock": "bun run tools/mock-server.ts"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18",
+    "svelte": ">=4",
+    "vue": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "svelte": { "optional": true },
+    "vue": { "optional": true }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.0.0",
+    "@commitlint/config-conventional": "^19.0.0",
+    "@types/bun": "^1.0.0",
+    "@types/react": "^19.0.0",
+    "husky": "^9.0.0",
+    "svelte": "^5.0.0",
+    "typescript": "^5.7.0",
+    "vue": "^3.0.0"
+  }
+}

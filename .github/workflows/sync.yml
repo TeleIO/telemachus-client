@@ -1,0 +1,49 @@
+name: Sync API Schema
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [telemachus-release]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - name: Sync schema from latest release
+        run: bun run sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Regenerate and build
+        run: |
+          bun run generate
+          bun run build
+
+      - name: Create PR if changed
+        run: |
+          if git diff --quiet; then
+            echo "No schema changes"
+            exit 0
+          fi
+          BRANCH="auto/sync-schema-$(date +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "chore: sync api-schema from upstream release"
+          git push -u origin "$BRANCH"
+          gh pr create \
+            --title "chore: sync API schema from upstream" \
+            --body "Automated sync from TeleIO/Telemachus-1 latest release." \
+            --base main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
